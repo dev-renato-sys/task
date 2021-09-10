@@ -11,17 +11,22 @@ class listarController{
     }
 
     private function criarTabela(){
-        $row = $this->lista->getLivro();
+        $row = $this->lista->getCorrespondence();
         foreach ($row as $value){
+            // echo "<thead class='thead-light'>";
             echo "<tr>";
-            echo "<th>".$value['nome'] ."</th>";
-            echo "<td>".$value['autor'] ."</td>";
-            echo "<td>".$value['quantidade'] ."</td>";
-            echo "<td> R$:".$value['preco'] ."</td>";
-            echo "<td>".$value['data'] ."</td>";
-            echo "<td>".$value['flag'] = ($value['flag'] == "0") ? "Desativado":"Ativado" ."</td>";
-            echo "<td><a class='btn btn-warning' href='editar.php?id=".$value['nome']."'>Editar</a><a class='btn btn-danger' href='../controller/ControllerDeletar.php?id=".$value['nome']."'>Excluir</a></td>";
+            echo "<th>".$value['company_name'] ."</th>";
+            echo "<td>".$value['ac'] ."</td>";
+            echo "<td>".$value['address'] ."</td>";
+            echo "<td>".$value['person'] ."</td>";
+            echo "<td>".$value['type'] ."</td>";
+            echo "<td>".$value['ar'] ."</td>";
+            echo "<td>".$value['send_date'] ."</td>";
+            echo "<td>".$value['code'] ."</td>";
+            // echo "<td>".$value['flag'] = ($value['flag'] == "0") ? "Desativado":"Ativado" ."</td>";
+            echo "<td><a class='btn btn-warning' href='editar.php?id=".$value['id_correspondence']."'>Editar</a><a class='btn btn-danger' href='../controller/ControllerDeletar.php?id=".$value['id_correspondence']."'>Excluir</a></td>";
             echo "</tr>";
+            // echo "</thead>";
         }
     }
 }

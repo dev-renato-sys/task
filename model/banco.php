@@ -13,9 +13,16 @@ class Banco{
         $this->mysqli = new mysqli(BD_SERVIDOR, BD_USUARIO , BD_SENHA, BD_BANCO);
     }
 
-    public function setLivro($nome,$autor,$quantidade,$preco,$data){
-        $stmt = $this->mysqli->prepare("INSERT INTO livros (`nome`, `autor`, `quantidade`, `preco`, `data`) VALUES (?,?,?,?,?)");
-        $stmt->bind_param("sssss",$nome,$autor,$quantidade,$preco,$data);
+    public function setCorrespondence($company_name, $ac, $address, $person, $type, $ar, $send_date, $code)
+    {
+        $created_date = date("Y-m-d");
+        $update_date = date("Y-m-d");
+        $user = 1;
+
+        $stmt = $this->mysqli->prepare("INSERT INTO tbl_correspondence 
+        (`company_name`, `ac`, `address`, `person`, `type`, `ar`, `send_date`, `code`, `user`, `created_date`, `update_date`) 
+        VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+        $stmt->bind_param('ssssssssiss', $company_name, $ac, $address, $person, $type, $ar, $send_date, $code, $user, $created_date, $update_date);
          if( $stmt->execute() == TRUE){
             return true ;
         }else{
@@ -24,8 +31,10 @@ class Banco{
 
     }
 
-    public function getLivro(){
-        $result = $this->mysqli->query("SELECT * FROM livros");
+    public function getCorrespondence(){
+        $array = [];
+
+        $result = $this->mysqli->query("SELECT * FROM tbl_correspondence");
         while($row = $result->fetch_array(MYSQLI_ASSOC)){
             $array[] = $row;
         }
@@ -33,22 +42,33 @@ class Banco{
 
     }
 
-    public function deleteLivro($id){
-        if($this->mysqli->query("DELETE FROM `livros` WHERE `nome` = '".$id."';")== TRUE){
+    public function deleteCorrespondence($id){
+        if($this->mysqli->query("DELETE FROM `tbl_correspondence` WHERE `id_correspondence` = '".$id."';")== TRUE){
             return true;
         }else{
             return false;
         }
 
     }
-    public function pesquisaLivro($id){
-        $result = $this->mysqli->query("SELECT * FROM livros WHERE nome='$id'");
+    public function pesquisaCorrespondence($id){
+        $result = $this->mysqli->query("SELECT * FROM tbl_correspondence WHERE id_correspondence='$id'");
         return $result->fetch_array(MYSQLI_ASSOC);
 
     }
-    public function updateLivro($nome,$autor,$quantidade,$preco,$flag,$data,$id){
-        $stmt = $this->mysqli->prepare("UPDATE `livros` SET `nome` = ?, `autor`=?, `quantidade`=?, `preco`=?, `flag`=?,`data` = ? WHERE `nome` = ?");
-        $stmt->bind_param("sssssss",$nome,$autor,$quantidade,$preco,$flag,$data,$id);
+    public function updateCorrespondence($company_name,$ac,$address,$person,$type,$ar,$send_date,$code,$id){
+        $update_date = date("Y-m-d");
+
+        $stmt = $this->mysqli->prepare("UPDATE `tbl_correspondence`
+         SET `company_name` = ?,
+          `ac`=?,
+           `address`=?,
+            `person`=?,
+             `type`=?,
+             `ar` = ?,
+             `send_date` = ?,
+              `code` = ?,
+               `update_date` = ? WHERE `id_correspondence` = ?");
+        $stmt->bind_param("sssssssssi",$company_name,$ac,$address,$person,$type,$ar,$send_date,$code,$update_date,$id);
         if($stmt->execute()==TRUE){
             return true;
         }else{
